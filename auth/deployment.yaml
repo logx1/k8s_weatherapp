@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weatherapp-auth
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: weatherapp-auth
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: weatherapp-auth
+    spec:
+      containers:
+      - name: weatherapp-auth
+        image: logx1/weatherapp-auth:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+        env:
+          - name: DB_HOST
+            value: database-svc
+          - name: DB_USER
+            value: root
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: passwd
+                key: MYSQL_ROOT_PASSWORD
+          - name: DB_NAME
+            value: weatherapp
+          - name: DB_PORT
+            value: "3306"
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: passwd
+                key: secret-key

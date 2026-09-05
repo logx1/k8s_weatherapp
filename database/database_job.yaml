@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-mysql-user-job
+spec:
+  template:
+    metadata:
+      name: create-mysql-user-job
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: create-user
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: passwd
+              key: MYSQL_ROOT_PASSWORD
+        - name: AUTH-PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: passwd
+              key: AUTH-PASSWORD
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          echo "Waiting for MySQL to accept connections..."
+          until mysqladmin ping -h database-svc.default.svc.cluster.local --silent; do
+            sleep 2
+          done
+
+          echo "Creating MySQL user..."
+          mysql -h database-svc.default.svc.cluster.local -u root -p"$MYSQL_ROOT_PASSWORD" -e "
+            CREATE DATABASE IF NOT EXISTS weatherapp;
+            CREATE USER IF NOT EXISTS 'dbuser'@'%' IDENTIFIED BY '$AUTH-PASSWORD';
+            GRANT ALL PRIVILEGES ON weatherapp.* TO 'dbuser'@'%';
+            FLUSH PRIVILEGES;
+          "
+          echo "User created successfully."
