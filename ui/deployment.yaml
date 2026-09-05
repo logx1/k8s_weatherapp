@@ -16,6 +16,13 @@ spec:
         - name: weatherapp-ui
           image: "logx1/weatherapp-ui:v1"
           imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
           env:
           - name: AUTH_HOST
             value: weatherapp-auth-svc
