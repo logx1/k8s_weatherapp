@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# database
+  - database/database_secret.yaml
+  - database/database.yaml
+  - database/database-svc.yaml
+  - database/database_job.yaml
+
+# auth service
+  - auth/deployment.yaml
+  - auth/svc.yaml
+  - auth/auth-hpa.yaml
+
+# weather service
+  - weather/secret.yaml
+  - weather/deploy.yaml
+  - weather/svc.yaml
+  - weather/weather-hpa.yaml
+
+# ui service
+  - ui/deployment.yaml
+  - ui/svc.yaml
+  - ui/ui-hpa.yaml
+
+# ingress
+  - ui/ingress.yaml
