@@ -1,4 +1,4 @@
-# Kubernetes Weather App
+![animate k8s](https://github.com/user-attachments/assets/85cffcf1-9fc5-4512-a478-7d48cfb45c65)# Kubernetes Weather App
 
 This is a microservices-based weather application designed to run on Kubernetes.
 
@@ -66,5 +66,9 @@ This command will apply all manifests defined in `kustomization.yaml`, including
 ### Secrets Configuration
 
 Make sure you have populated the correct Secrets for the application to work:
+
+<img width="2816" height="1536" alt="Gemini_Generated_Image_slobvhslobvhslob" src="https://github.com/user-attachments/assets/b20aa0f0-4db0-4d17-9f65-8d0d61cce1f2" />
+
+
 - The **Weather Service** expects an API key to be available via a Secret named `weather` (key `apikey`).
 - The **Auth Service** and **Database** expect passwords to be available via a Secret named `passwd`.
